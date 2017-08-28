@@ -56,6 +56,9 @@ var GridVisualization = function(width, height, gridWidth, gridHeight, context) 
                         // canvas y direction is from top to bottom. But we
                         // normally keep y-axis in plots from bottom to top.
                         p.y = gridHeight - p.y - 1;
+			if (p.Opacity) {
+				context.globalAlpha = p.Opacity;
+			}
 			if (p.Shape == "rect")
 				this.drawRectangle(p.x, p.y, p.w, p.h, p.Color, p.Filled, p.text, p.text_color);
 			else if (p.Shape == "circle")

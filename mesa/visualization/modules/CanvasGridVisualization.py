@@ -90,9 +90,11 @@ class CanvasGrid(VisualizationElement):
                 cell_objects = model.grid.get_cell_list_contents([(x, y)])
                 for obj in cell_objects:
                     portrayal = self.portrayal_method(obj)
-                    if portrayal:
-                        portrayal["x"] = x
-                        portrayal["y"] = y
-                        grid_state[portrayal["Layer"]].append(portrayal)
+                    plist = [portrayal] if type(portrayal) is not list else portrayal
+                    for p in plist:
+                        if p:
+                            p["x"] = x
+                            p["y"] = y
+                            grid_state[p["Layer"]].append(p)
 
         return grid_state
