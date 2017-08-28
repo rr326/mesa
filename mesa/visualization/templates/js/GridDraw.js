@@ -63,10 +63,12 @@ var GridVisualization = function(width, height, gridWidth, gridHeight, context) 
 				this.drawRectangle(p.x, p.y, p.w, p.h, p.Color, p.Filled, p.text, p.text_color);
 			else if (p.Shape == "circle")
 				this.drawCircle(p.x, p.y, p.r, p.Color, p.Filled, p.text, p.text_color);
-                        else if (p.Shape == "arrowHead")
+      else if (p.Shape == "arrowHead")
 				this.drawArrowHead(p.x, p.y, p.heading_x, p.heading_y, p.scale, p.Color, p.Filled, p.text, p.text_color);
-			else
-				this.drawCustomImage(p.Shape, p.x, p.y, p.scale, p.text, p.text_color)
+      else if (p.Shape == "X")
+        this.drawX(p.x, p.y, p.w, p.h, p.Color, p.Line_Width);
+	  else
+		this.drawCustomImage(p.Shape, p.x, p.y, p.scale, p.text, p.text_color);
 		}
 	};
 
@@ -253,7 +255,7 @@ var GridVisualization = function(width, height, gridWidth, gridHeight, context) 
 				context.fillText(text, tx, ty);
 			}
 		}
-	}
+	};
 
 	/**
         Draw Grid lines in the full gird
@@ -283,5 +285,31 @@ var GridVisualization = function(width, height, gridWidth, gridHeight, context) 
 		context.clearRect(0, 0, width, height);
 		context.beginPath();
 	};
+
+    /**
+  Draw an X in the specified grid cell.
+  x, y: Grid coords
+  w, h: Width and height, [0, 1]
+  color: Color for the rectangle
+  stroke_width: width
+  */
+  this.drawX = function(x, y, w, h, color, line_width) {
+    context.beginPath();
+    var dx = w * cellWidth;
+    var dy = h * cellHeight;
+
+    // Keep in the center of the cell:
+    var x0 = (x + 0.5) * cellWidth - dx/2;
+    var y0 = (y + 0.5) * cellHeight - dy/2;
+
+    context.strokeStyle = color;
+    context.lineWidth = line_width || 5;
+    context.moveTo(x0, y0);
+    context.lineTo(x0+dx, y0+dy);
+    context.moveTo(x0, y0+dy);
+    context.lineTo(x0+dx, y0);
+    context.closePath();
+    context.stroke();
+  };
 
 };
